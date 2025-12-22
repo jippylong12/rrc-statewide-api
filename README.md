@@ -5,7 +5,7 @@ A Python library for parsing and processing the Texas Railroad Commission (RRC) 
 ## Features
 - Efficient parsing of legacy `.dbf` files using `dbfread`.
 - Automatic handling of character encoding (`ISO-8859-1`).
-- Standardized mapping for critical fields (`API_NUM`, `LEASE_NUM`, `DISTRICT`).
+- Standardized mapping and normalization of date fields.
 - Helper utilities for RRC-specific data formatting.
 
 ## Installation

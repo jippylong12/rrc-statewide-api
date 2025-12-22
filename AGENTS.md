@@ -4,7 +4,7 @@
 Create a python module `rrc-statewide-api` to parse and process the Texas Railroad Commission (RRC) **Statewide API Data** provided in dBase (`.dbf`) format.
 
 ## Context
-- **Format**: dBase III/IV (`.dbf`) Binary format.
+- **Format**: dBase III/IV (`.dbf`) Binary format (MAF016 derived).
 - **Source**: RRC "Statewide API Data" download (GIS/Mapping dataset).
 - **Core Dependencies**: `dbfread` for binary parsing.
 - **Structure**: Record-based attribute tables linking API numbers to Lease IDs, Districts, and Counties.
@@ -16,12 +16,9 @@ Create a python module `rrc-statewide-api` to parse and process the Texas Railro
 - `tests/test_parser.py`: Unit tests using sample DBF fragments.
 
 ## Development Status
-- **[NEW]** Project structure initialized as `rrc-statewide-api`.
-- **[NEW]** `dbfread` integration established for handling binary `.dbf` streams.
-- **[NEW]** Logic implemented to handle `ISO-8859-1` encoding for character support in Survey/Lease names.
-- **[NEW]** Standardized mapping for `API_NUM`, `LEASE_NUM`, and `DISTRICT` fields.
-- **[NEW]** Implementation of leading-zero padding for Oil (5-digit) and Gas (6-digit) Lease IDs.
-- **[NEW]** Testing infrastructure set up with `pytest` and `tests/data` directory.
+- **[NEW]** Reverted to `dbfread` based parser, supporting standard `.dbf` input.
+- **[NEW]** Implemented date normalization for older RRC string formats (YYYYMMDD).
+- **[NEW]** Tests updated to use real `api329.dbf` data for verification.
 
 ## Post-Round Maintenance
 After each development round, the agent MUST:

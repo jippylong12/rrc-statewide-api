@@ -1,50 +1,28 @@
 from typing import Optional, Union
+import datetime
+
+def format_date(val: Union[str, datetime.date, None]) -> Optional[str]:
+    """
+    Format date value to ISO string (YYYY-MM-DD).
+    Handles 'YYYYMMDD' strings or datetime.date objects.
+    """
+    if not val:
+        return None
+        
+    if isinstance(val, (datetime.date, datetime.datetime)):
+        return val.strftime("%Y-%m-%d")
+        
+    val_str = str(val).strip()
+    
+    # Handle '00000000' or empty
+    if not val_str or val_str == "00000000":
+        return None
+        
+    # If 8 digits YYYYMMDD
+    if len(val_str) == 8 and val_str.isdigit():
+         return f"{val_str[:4]}-{val_str[4:6]}-{val_str[6:]}"
+         
+    return val_str
 
 def construct_api_number(county_code: Union[str, int], unique_id: Union[str, int]) -> str:
-    """
-    Construct a standard API number (CCC-UUUUU).
-    RRC API numbers often usually generally 8 digits: 3 for county, 5 for unique id.
-    
-    Args:
-        county_code: 3-digit county code.
-        unique_id: 5-digit unique identifier.
-        
-    Returns:
-        Formatted API string (e.g., '105-12345').
-    """
     return f"{int(county_code):03d}-{int(unique_id):05d}"
-
-def format_lease_id(lease_id: Union[str, int], lease_type: str = 'oil') -> str:
-    """
-    Format lease ID with appropriate padding.
-    Oil: 5 digits
-    Gas: 6 digits
-    
-    Args:
-        lease_id: Raw lease ID.
-        lease_type: 'oil' or 'gas'.
-        
-    Returns:
-        Padded lease ID string.
-    """
-    id_val = int(lease_id) if str(lease_id).isdigit() else 0
-    if lease_type.lower() == 'gas':
-        return f"{id_val:06d}"
-    return f"{id_val:05d}"
-    
-def format_district(district_code: Union[str, int]) -> str:
-    """
-    Format district code (ensure 2 digits).
-    
-    Args:
-        district_code: Raw district code.
-        
-    Returns:
-        Formatted district string.
-    """
-    # Handle district '8A' or similar alphanumeric cases if they exist, 
-    # but standard numeric ones get 0-padded.
-    s_code = str(district_code).strip().upper()
-    if s_code.isdigit():
-        return f"{int(s_code):02d}"
-    return s_code
