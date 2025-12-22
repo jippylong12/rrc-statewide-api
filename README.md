@@ -23,4 +23,7 @@ parser = RRCStatewideParser("path/to/file.dbf")
 
 for record in parser.parse():
     print(record['API_NUM'], record['LEASE_NAME'])
+    
+# Inspect available fields
+print(parser.get_fields())
 ```

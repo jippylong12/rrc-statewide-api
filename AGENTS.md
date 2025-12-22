@@ -16,9 +16,9 @@ Create a python module `rrc-statewide-api` to parse and process the Texas Railro
 - `tests/test_parser.py`: Unit tests using sample DBF fragments.
 
 ## Development Status
-- **[NEW]** Reverted to `dbfread` based parser, supporting standard `.dbf` input.
-- **[NEW]** Implemented date normalization for older RRC string formats (YYYYMMDD).
-- **[NEW]** Tests updated to use real `api329.dbf` data for verification.
+- **[RELEASE]** Version 1.0.0 released.
+- **[NEW]** Confirmed support for DBF format using `api329.dbf` verification.
+- **[NEW]** Tests passing with real data found in `tests/data/api329.dbf`.
 
 ## Post-Round Maintenance
 After each development round, the agent MUST:

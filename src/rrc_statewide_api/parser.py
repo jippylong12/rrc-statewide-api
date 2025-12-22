@@ -19,6 +19,14 @@ class RRCStatewideParser:
         self.dbf_path = dbf_path
         self.encoding = encoding
 
+    def get_fields(self) -> list[str]:
+        """
+        Get the list of normalized field names available in the DBF.
+        """
+        table = DBF(self.dbf_path, encoding=self.encoding, char_decode_errors='replace', load=False)
+        # DBF field names are usually uppercase, but we force normalization logic here to match _normalize_record
+        return [f.upper() for f in table.field_names]
+
     def parse(self) -> Iterator[Dict[str, Any]]:
         """
         Yields normalized records from the DBF file.

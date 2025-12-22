@@ -52,5 +52,20 @@ def test_key_normalization():
     except StopIteration:
         pytest.fail("Empty DBF file")
 
+def test_get_fields():
+    """Verify get_fields returns the list of columns."""
+    if not REAL_DBF_PATH.exists():
+        pytest.skip("api329.dbf missing")
+        
+    parser = RRCStatewideParser(str(REAL_DBF_PATH))
+    fields = parser.get_fields()
+    
+    assert len(fields) > 0
+    assert "API_NUM" in [f.replace('_', '').replace('NUM', '').replace('ID', '') for f in fields] or "APINUM" in fields
+    # Based on previous run keys: ['ABSTRACT', 'APINUM', 'BLOCK', 'COMPLETION', ...]
+    assert "APINUM" in fields
+    assert "LEASE_NAME" in fields or "LEASENAME" in fields or "LEASE_NAM" in fields
+    # previous run: LEASE_NAME
+
 
 
