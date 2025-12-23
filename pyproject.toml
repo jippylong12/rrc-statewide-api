@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rrc-statewide-api"
-version = "1.0.1"
+version = "1.0.2"
 description = "A Python parser for Texas RRC Statewide API Data (DBF format)"
 readme = "README.md"
 authors = [

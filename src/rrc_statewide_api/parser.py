@@ -49,6 +49,35 @@ class RRCStatewideParser:
         # Normalize keys to uppercase
         data = {k.upper(): v for k, v in data.items()}
         
+        # Normalize truncated keys from 10 char limit of DBF
+        # e.g. OIL_GAS_CO -> OIL_GAS_CODE
+        if 'OIL_GAS_CO' in data:
+            data['OIL_GAS_CODE'] = data.pop('OIL_GAS_CO')
+            
+        # Handle COBOL REDEFINES: GAS_RRCID vs OIL_LEASE_NUM
+        # The field commonly labeled GAS_RRCID in DBF exports is actually:
+        # - OIL_LEASE_NUM (5 chars) if OIL_GAS_CODE == 'O'
+        # - GAS_RRCID (6 chars) if OIL_GAS_CODE == 'G'
+        
+        # We will expose a generic 'LEASE_NUMBER' and specific fields.
+        raw_id = data.get('GAS_RRCID', '')
+        # Synthesize LEASE_NUMBER
+        data['LEASE_NUMBER'] = str(raw_id).strip()
+        
+        og_code = data.get('OIL_GAS_CODE', '').strip()
+        
+        if og_code == 'O':
+            # It's an OIL well, so the ID is the Oil Lease Number
+            data['OIL_LEASE_NUM'] = str(raw_id).strip()
+            # It is NOT a Gas RRC ID
+            data['GAS_RRCID'] = None
+        elif og_code == 'G':
+             # It IS a Gas RRC ID
+             # (It remains in GAS_RRCID key, just ensure string)
+             data['GAS_RRCID'] = str(raw_id).strip()
+             data['OIL_LEASE_NUM'] = None
+        
+        
         # Helper: Ensure date fields are formatted if they exist as strings
         # Based on MAF016 docs: COMPLETION_DATE, PLUG_DATE
         # Observed headers: COMPLETION, PLUG_DATE
